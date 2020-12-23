@@ -1,0 +1,18 @@
+.swal-title {
+  font-size: 48px;
+  font-family: sans-serif;
+}
+
+.swal-text {
+  font-size: 40px;
+  text-align: center;
+  font-family: sans-serif;
+}
+
+.swal-button {
+  font-family: sans-serif;
+  padding: 7px 19px;
+  background-color: #010545;
+  font-size: 20px;
+  border: 1px solid #010545;
+}
