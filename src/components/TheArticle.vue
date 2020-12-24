@@ -66,6 +66,12 @@
                           label="Artículo"
                         ></v-text-field>
                       </v-flex>
+                      <v-flex xs12 sm12 md12>
+                        <v-text-field
+                          v-model="editedItem.imagen"
+                          label="Imagen"
+                        ></v-text-field>
+                      </v-flex>
                     </v-layout>
                     <v-flex xs12 sm12 md12>
                       <v-textarea
@@ -212,6 +218,7 @@ export default {
         nombre: "",
       },
       descripcion: "",
+      imagen: "",
       estado: 1,
     },
     defaultItem: {
@@ -223,6 +230,7 @@ export default {
         nombre: "",
       },
       descripcion: "",
+      imagen: "",
       estado: 1,
     },
   }),
@@ -387,6 +395,7 @@ export default {
               {
                 nombre: this.editedItem.nombre,
                 codigo: this.editedItem.codigo,
+                imagen: this.editedItem.imagen,
                 categoria: this.categoria.id,
                 descripcion: this.editedItem.descripcion,
                 id: this.editedItem.id,
@@ -403,6 +412,7 @@ export default {
               {
                 nombre: this.editedItem.nombre,
                 codigo: this.editedItem.codigo,
+                imagen: this.editedItem.imagen,
                 descripcion: this.editedItem.descripcion,
                 categoriaId: this.categoria.id,
               },
