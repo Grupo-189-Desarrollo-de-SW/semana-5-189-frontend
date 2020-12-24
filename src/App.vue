@@ -24,14 +24,20 @@
       </router-link>
       <v-spacer></v-spacer>
 
-      <v-btn to="/login" text>
+      <v-btn v-if="this.$store.state.user" to="/admin" text>
+        <span class="mr-2">Sistema</span>
+        <v-icon>open_in_new</v-icon>
+      </v-btn>
+      <v-btn v-else to="/login" text>
         <span class="mr-2">Iniciar Sesión</span>
         <v-icon>open_in_new</v-icon>
       </v-btn>
     </v-app-bar>
 
-    <v-main>
-      <router-view />
+    <v-main fluid fill-height>
+          <v-slide-y-transition mode="out-in">
+            <router-view />
+          </v-slide-y-transition>
     </v-main>
   </v-app>
 </template>

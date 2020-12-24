@@ -41,21 +41,42 @@
                 </v-card-title>
 
                 <v-card-text>
-                  <v-container>
-                    <v-row>
-                      <v-col cols="12">
+                  <v-container grid-list-md>
+                    <v-layout wrap>
+                      <v-flex xs12 sm12 md12>
                         <v-text-field
                           v-model="editedItem.nombre"
                           label="Nombre"
                         ></v-text-field>
-                      </v-col>
-                      <v-col cols="12">
+                      </v-flex>
+                      <v-flex xs12 sm6 md6>
                         <v-text-field
                           v-model="editedItem.email"
                           label="Correo"
                         ></v-text-field>
-                      </v-col>
-                    </v-row>
+                      </v-flex>
+                      <v-flex xs12 sm6 md6>
+                        <v-select
+                          v-model="rol"
+                          label="Rol"
+                          :items="listaRoles"
+                          item-text="rol"
+                        ></v-select>
+                      </v-flex>
+                      <v-flex xs12 sm12 md12>
+                        <v-text-field
+                          v-model="editedItem.password"
+                          :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                          :rules="[rules.required, rules.min]"
+                          :type="show1 ? 'text' : 'password'"
+                          name="input-10-1"
+                          label="Contraseña"
+                          hint="Al menos 8 caracteres"
+                          counter
+                          @click:append="show1 = !show1"
+                        ></v-text-field>
+                      </v-flex>
+                    </v-layout>
                     <v-flex xs12 sm12 md12 v-show="valida">
                       <v-alert
                         dense
@@ -152,6 +173,8 @@ export default {
     dialog: false,
     adModal: false,
     adAccion: false,
+    listaRoles: ["Administrador", "Vendedor", "Almacenero"],
+    rol: "",
     adNombre: "",
     headers: [
       { text: "ID", value: "id" },
@@ -161,6 +184,7 @@ export default {
         sortable: true,
         value: "nombre",
       },
+      { text: "Rol", value: "rol" },
       { text: "Correo", value: "email" },
       { text: "Estado", value: "estado" },
       { text: "Acciones", value: "actions", sortable: false },
@@ -175,13 +199,22 @@ export default {
       id: "",
       nombre: "",
       email: "",
+      rol: "",
+      password: "",
       estado: 1,
     },
     defaultItem: {
       id: "",
       nombre: "",
       email: "",
+      rol: "",
+      password: "",
       estado: 1,
+    },
+    show1: false,
+    rules: {
+      required: (value) => !!value || "Obligatorio.",
+      min: (v) => v.length >= 8 || "Minimo 8 caracteres",
     },
   }),
 
@@ -220,9 +253,7 @@ export default {
       this.valida = 0;
       this.validaCampo = [];
       if (this.editedItem.nombre.length < 3 || this.editedItem.nombre > 50) {
-        this.validaCampo.push(
-          "El nombre de la categoria debe tener entre 3-50 caracteres"
-        );
+        this.validaCampo.push("El nombre debe tener entre 3-50 caracteres");
       }
       if (
         this.editedItem.email
@@ -234,6 +265,12 @@ export default {
         this.validaCampo.push(
           "El email tiene un formato incorrecto: ex@abc.xyz"
         );
+      }
+      if (!this.rol) {
+        this.validaCampo.push("Seleccione un rol");
+      }
+      if (this.editedItem.password.length < 8) {
+        this.validaCampo.push("La contraseña debe tener al menos 8 caracteres");
       }
       if (this.validaCampo.length) {
         this.valida = 1;
@@ -248,6 +285,7 @@ export default {
 
     editItem(item) {
       this.editedIndex = item.id;
+      this.rol = item ? item.rol : "";
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
@@ -299,6 +337,7 @@ export default {
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
+        this.rol = "";
         this.limpiar();
       });
     },
@@ -319,7 +358,9 @@ export default {
               "/api/usuario/update",
               {
                 nombre: this.editedItem.nombre,
+                rol: this.rol,
                 email: this.editedItem.email,
+                password: this.editedItem.password,
                 id: this.editedItem.id,
               },
               {
@@ -333,7 +374,9 @@ export default {
               "/api/usuario/add",
               {
                 nombre: this.editedItem.nombre,
+                rol: this.rol,
                 email: this.editedItem.email,
+                password: this.editedItem.password,
               },
               {
                 headers: {

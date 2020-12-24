@@ -73,7 +73,7 @@
                         label="Descripción"
                         auto-grow
                         no-resize
-                        counter="250"
+                        counter="600"
                       ></v-textarea>
                     </v-flex>
                     <v-flex xs12 sm12 md12 v-show="valida">
@@ -294,10 +294,10 @@ export default {
       }
       if (
         this.editedItem.descripcion.length < 10 ||
-        this.editedItem.descripcion.length > 250
+        this.editedItem.descripcion.length > 600
       ) {
         this.validaCampo.push(
-          "La descripción del artículo debe tener entre 10 y 250 caracteres."
+          "La descripción del artículo debe tener entre 10 y 600 caracteres."
         );
       }
       if (this.validaCampo.length) {

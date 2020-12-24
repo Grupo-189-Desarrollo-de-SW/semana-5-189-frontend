@@ -9,7 +9,6 @@ const store = new Vuex.Store({
   state: {
       token:"",
       user:null,
-      estado:true,
   },
   mutations: {
       setUsuario(state, usuario){
@@ -18,15 +17,8 @@ const store = new Vuex.Store({
       setToken(state,token){
           state.token= token;
       },
-      setEstado(state,estado){
-        state.estado= estado;
-    }
-
   },
   actions:{
-    cambiarEstado({commit}){
-        commit("setEstado",estado);
-    },
     guardarToken({commit},token){
         commit("setToken",token);
         commit("setUsuario",jwtDecode(token));
@@ -36,7 +28,6 @@ const store = new Vuex.Store({
     autoLogin({commit}){
         const token = localStorage.getItem("jwt");
         if(token!=="null" && token!==null){
-            console.log(token);
             commit("setToken",token);
             commit("setUsuario",jwtDecode(token));
         }
@@ -44,7 +35,6 @@ const store = new Vuex.Store({
     salir({commit}){
         commit("setToken",null);
         commit("setUsuario",null);
-        commit("setEstado",true);
         localStorage.setItem("jwt",null);
         router.push({name:"Home"});
     }
