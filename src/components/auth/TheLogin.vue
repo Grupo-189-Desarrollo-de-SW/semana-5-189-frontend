@@ -1,11 +1,13 @@
 <template>
-  <v-layout align-center justify-center>
+  <v-layout align-center justify-center style="height:100%">
     <v-flex xs12 sm8 md6 lg5 x14>
       <v-card>
         <v-toolbar dark color="primary">
+          <v-spacer></v-spacer>
           <v-toolbar-title>
             Acceso al Sistema
           </v-toolbar-title>
+          <v-spacer></v-spacer>
         </v-toolbar>
         <v-card-text>
           <v-form ref="form" v-model="valid" lazy-validation>
@@ -29,7 +31,12 @@
         </v-card-text>
         <v-card-actions class="px-3 pb-3">
           <v-flex text-xs-right>
-            <v-btn :disabled="!valid" color="success" @click="loginUser()">
+            <v-btn
+              :disabled="!valid"
+              color="success"
+              @click="loginUser()"
+              block
+            >
               Iniciar sesión
             </v-btn>
           </v-flex>
@@ -68,7 +75,6 @@ export default {
     async loginUser() {
       try {
         this.$refs.form.validate();
-        console.log("fefe");
         let response = await this.$http.post("/api/usuario/login", this.login);
         let token = response.data.tokenReturn;
         if (token) {
@@ -77,8 +83,15 @@ export default {
           swal("Bienvenido", "Hola " + response.data.user.nombre, "success");
         }
       } catch (err) {
+        if (err.response.status === 404) {
+          swal(
+            "Error",
+            "No existe el usuario o las credenciales son incorrectas.",
+            "error"
+          );
+        } else {
           swal("Error", "Ocurrió un error con el servidor.", "error");
-        
+        }
         this.login.email = "";
         this.login.password = "";
       }

@@ -19,7 +19,7 @@
     <v-navigation-drawer v-model="drawer" fixed temporary>
       <v-card class="mx-auto" width="300">
         <v-list>
-          <v-list-item  @click="this.$store.dispatch('cambiarEstado',true)">
+          <v-list-item :to="{name:'Home'}">
             <v-list-item-icon>
               <v-icon>mdi-home</v-icon>
             </v-list-item-icon>
@@ -62,7 +62,7 @@
       </v-card>
     </v-navigation-drawer>
 
-    <v-main class="grey lighten-2">
+    <v-main class="indigo lighten-5">
       <v-container>
         <router-view />
       </v-container>

@@ -35,17 +35,16 @@ const store = new Vuex.Store({
     },
     autoLogin({commit}){
         const token = localStorage.getItem("jwt");
-        if(token!=="null"){
+        if(token!=="null" && token!==null){
+            console.log(token);
             commit("setToken",token);
             commit("setUsuario",jwtDecode(token));
-            return true;
         }
-        return false;
     },
     salir({commit}){
         commit("setToken",null);
         commit("setUsuario",null);
-        commit("cambiarEstado",true);
+        commit("setEstado",true);
         localStorage.setItem("jwt",null);
         router.push({name:"Home"});
     }
